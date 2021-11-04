@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.youtube.player.YouTubeStandalonePlayer
+import java.lang.IllegalArgumentException
 
 class StandaloneActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -18,7 +20,14 @@ class StandaloneActivity : AppCompatActivity(), View.OnClickListener {
         btnPlayList.setOnClickListener(this)
     }
 
-    override fun onClick(v: View?) {
-        TODO("Not yet implemented")
+    override fun onClick(v: View) {
+        val intent = when (v.id) {
+            R.id.btnPlayVideo -> YouTubeStandalonePlayer.createVideoIntent(
+                this, getString(R.string.GOOGLE_API_KEYS), YOUTUBE_VIDEO_ID, 0, true, false)
+            R.id.btnPlaylist -> YouTubeStandalonePlayer.createPlaylistIntent(
+                this, getString(R.string.GOOGLE_API_KEYS), YOUTUBE_PLAYLIST, 0, 0, true, true)
+            else -> throw IllegalArgumentException("Undefined Button Clicked")
+        }
+        startActivity(intent)
     }
 }
